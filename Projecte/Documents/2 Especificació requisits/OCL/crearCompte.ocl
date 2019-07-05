@@ -1,0 +1,27 @@
+-------------
+Crear compte
+-------------
+
+Context:
+(
+    Sistema::crearCompte
+    (
+        nomClient:  String
+    )
+)
+Pre:
+(
+    Usuari.allInstances() -> not exists
+    ( u | 
+        u.username = nomClient
+    )
+)
+Post:
+(
+    Client.allInstances() -> exists
+    ( u |
+        u.oclIsNew()					and
+        u.nom 		= nomClient         and
+        u.password	= ""
+    )
+)

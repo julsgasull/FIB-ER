@@ -1,0 +1,28 @@
+--------------
+Crear Planning
+--------------
+
+Context:
+(
+    Sistema::crearPlanning
+    (
+        nomClient:  String,
+        nomCoach:   String,
+        linkPlanning: String
+    )
+)
+Pre:
+(
+    Client.allInstances()       -> exists ( c |  c.username = nomClient)  and
+    Entrenador.allInstances()   -> exists ( e |  e.username = nomCoach)
+)
+Post:
+(
+    Planning.allInstances() -> exists
+    ( p |
+        p.oclIsNew()					                                    and
+        p.linkPlanning = linkPlanning                                       and
+        p.Client = Client.select -> ( c |  c.username = nomClient)          and
+        p.Entrenador = Entrenador.select -> ( e |  e.username = nomCoach)
+    )
+)

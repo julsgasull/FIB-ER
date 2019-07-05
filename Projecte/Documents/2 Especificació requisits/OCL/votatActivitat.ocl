@@ -1,0 +1,42 @@
+---------------
+Votar activitat
+---------------
+
+
+Context:
+(
+    Sistema::votarActivitat
+    (
+        salaActivitat:      Integer,    #numSala
+        dataActivitat:      Date,       #data
+        horaIniActivitat:   Hour,       #hora
+        usuariVotant:       String      #username
+    )
+)
+Pre:
+(
+    Client.allInstances() -> exists
+    ( u | 
+        u.username = usuariVotant
+    )
+
+    and
+
+    PropostaActivitat.allInstances() -> exists
+    ( a | 
+        a.numSala   = salaActivitat     and
+        a.data      = dataActivitat     and
+        a.hora      = horaIniActivitat  and
+    )
+)
+Post:
+(
+    PropostaActivitat.allInstances() -> exists
+    ( a | 
+        a.numSala   =   salaActivitat           and
+        a.data      =   dataActivitat           and
+        a.hora      =   horaIniActivitat        and
+        a.vots      =   a.vots + 1              and
+        a.client    =   Client.allInstances() -> select( u | u.username = usuariVotant)
+    )
+)

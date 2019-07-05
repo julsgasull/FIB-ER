@@ -1,0 +1,27 @@
+---------------------
+Configurar privacitat
+---------------------
+
+Context:
+(
+    Sistema::configurarPrivacitat
+    (
+        nomClient:  String,
+        privat:     Boolean
+    )
+)
+Pre:
+(
+    Client.allInstances() -> exists
+    ( u | 
+        u.username = nomClient
+    )
+)
+Post:
+(
+    Client.allInstances() -> exists
+    ( u |
+        u.nom 		= nomClient     and
+        u.privat	= privat
+    )
+)

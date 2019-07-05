@@ -1,0 +1,28 @@
+--------------
+Crear Dieta
+--------------
+
+Context:
+(
+    Sistema::crearDiets
+    (
+        nomClient:  String,
+        nomNutri:   String,
+        linkDieta:  String
+    )
+)
+Pre:
+(
+    Client.allInstances()           -> exists ( c |  c.username = nomClient)  and
+    Nutricionista.allInstances()    -> exists ( e |  e.username = nomNutri)
+)
+Post:
+(
+    Dieta.allInstances() -> exists
+    ( d |
+        d.oclIsNew()					                                    and
+        d.linkDieta = linkDieta                                             and
+        d.Client = Client.select -> ( c |  c.username = nomClient)          and
+        d.Nutricionista = Nutricionista.select -> ( n |  n.username = nomNutri)
+    )
+)
